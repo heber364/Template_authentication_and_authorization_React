@@ -1,6 +1,6 @@
 import { FormEvent, useContext, useState } from "react";
 
-import { Button, Flex, Input, Text } from "@chakra-ui/react";
+import { Button, Flex, Input } from "@chakra-ui/react";
 import type { NextPage } from "next";
 
 import { AuthContext } from "../contexts/AuthContext";
@@ -13,16 +13,17 @@ const Home: NextPage = () => {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+
     const data = {
       email,
       password,
     };
 
-    console.log(data);
+    await signIn(data);
   }
   return (
     <Flex h="100vh" justifyContent="center" alignItems="center">
-      <Flex gap="2" direction="column" as="form" onSubmit={() => handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <Input
           placeholder="E-mail"
           type="email"
@@ -36,7 +37,7 @@ const Home: NextPage = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <Button type="submit">Entrar</Button>
-      </Flex>
+      </form>
     </Flex>
   );
 };
