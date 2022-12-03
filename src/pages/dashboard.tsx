@@ -3,7 +3,9 @@ import { useContext, useEffect } from "react";
 import { Heading } from "@chakra-ui/react";
 
 import { AuthContext } from "../contexts/AuthContext";
-import { api } from "../services/api";
+import { setupAPICliente } from "../services/api";
+import { api } from "../services/apiClient";
+import { withSSRAuth } from "../utils/withSSRAuth";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -16,3 +18,13 @@ export default function Dashboard() {
   });
   return <Heading>{`Dashboard: ${user?.email}`}</Heading>;
 }
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  const apiClient = setupAPICliente(ctx);
+  const response = await apiClient.get("/me");
+
+  console.log(response.data);
+  return {
+    props: {},
+  };
+});
